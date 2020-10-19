@@ -2,6 +2,9 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
 
+import sys
+import logging
+
 from security import authenticate, identity
 from resources.user import UserRegister
 from resources.item import Item, ItemList
@@ -12,6 +15,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'tara'
 api = Api(app)
+
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 jwt = JWT(app, authenticate, identity)
               
